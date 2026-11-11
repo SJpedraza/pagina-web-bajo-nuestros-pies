@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bajo Nuestros Pies</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Rubik:wght@500;700;900&display=swap">
+<style>
+:root{
+  --amarillo:#f7d117; --negro:#141414; --concreto:#d6d6d2; --concreto-2:#c4c4bf; --blanco:#fbfbf8;
+  --madera:#7a4a2a; --madera-h:#4f2c16; --piso:#c79a6b; --rojo:#d81e1e; --verde:#2e9e5b;
+  --f-d:"Rubik Dirt","Impact","Arial Black",sans-serif; --f-b:"Rubik","Arial",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--concreto);background-image:radial-gradient(rgba(0,0,0,.05) 1px,transparent 1.5px),radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.5px);background-size:7px 7px,11px 11px;color:var(--negro);font-family:var(--f-b);font-weight:500;font-size:16px;line-height:1.5;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-d);font-weight:400;line-height:.98;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--rojo);outline-offset:3px}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:40px}
+.cinta{height:26px;background:repeating-linear-gradient(-45deg,var(--amarillo) 0 22px,var(--negro) 22px 44px)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:3px solid var(--negro);border-radius:6px;padding:11px 20px;font-family:var(--f-b);font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.03em;background:var(--amarillo);color:var(--negro);box-shadow:5px 5px 0 var(--negro);text-decoration:none;transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--negro)}
+.btn.negro{background:var(--negro);color:var(--amarillo);box-shadow:5px 5px 0 var(--madera-h)}
+.btn.blanco{background:var(--blanco)}
+.kicker{display:inline-block;background:var(--negro);color:var(--amarillo);font-weight:900;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px}
+.h2{font-size:clamp(32px,5.4vw,50px)}
+.globo{position:relative;background:var(--blanco);border:4px solid var(--negro);border-radius:22px;padding:12px 16px;font-weight:900;font-size:16px}
+.globo::after{content:"";position:absolute;left:32px;top:calc(100% + 4px);border:14px solid transparent;border-top:18px solid var(--negro);border-bottom:0}
+.globo::before{content:"";position:absolute;left:38px;top:100%;border:8px solid transparent;border-top:11px solid var(--blanco);border-bottom:0;z-index:1}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:41;background:var(--negro)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--negro);color:var(--amarillo)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:60px;gap:14px}
+.logo{font-family:var(--f-d);font-size:24px;white-space:nowrap}
+.prog{display:flex;align-items:center;gap:10px;flex:0 1 260px;min-width:0}
+.prog span{font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+.prog-bar{flex:1;height:14px;border:2px solid var(--amarillo);background:var(--negro);overflow:hidden}
+.prog-bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,var(--amarillo) 0 8px,#c9a90f 8px 16px);transition:width .5s}
+.prog b{font-weight:900;min-width:4ch;text-align:right;font-variant-numeric:tabular-nums}
+.nav-juego{font-weight:900;font-size:13px;text-transform:uppercase;background:var(--amarillo);color:var(--negro);padding:7px 12px;border-radius:4px;text-decoration:none;white-space:nowrap}
+@media (max-width:560px){.prog span{display:none}.nav-juego{display:none}}
+
+.hero{padding-block:36px 44px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+.cartel{background:var(--amarillo);border:4px solid var(--negro);padding:24px;box-shadow:8px 8px 0 var(--negro)}
+.hero h1{font-size:clamp(40px,6.6vw,66px);margin-top:12px}
+.hero .lead{font-size:18px;font-weight:700;margin-block:14px 22px;max-width:44ch}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.retos-mini{display:flex;gap:16px;margin-top:22px;flex-wrap:wrap;font-weight:700;font-size:14px}
+.retos-mini span{display:flex;align-items:center;gap:6px}
+.retos-mini i{width:24px;height:24px;border:3px solid var(--negro);border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:900;background:var(--blanco);transition:.3s}
+.retos-mini i.ok{background:var(--verde);color:#fff}
+.cuarto{position:relative;background:var(--concreto-2);border:4px solid var(--negro);aspect-ratio:1/1;max-width:100%;overflow:hidden;display:grid;place-items:center}
+.cuarto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:24%;background:repeating-linear-gradient(90deg,var(--piso) 0 46px,#b88a5c 46px 48px);border-top:4px solid var(--negro)}
+.punti{position:relative;z-index:2;width:56%;margin-top:6%;cursor:pointer;transition:transform .2s}
+.punti:hover{transform:rotate(-3deg)}
+.punti.salta{animation:salta .55s}
+@keyframes salta{35%{transform:translateY(-22px) rotate(4deg)}70%{transform:translateY(0) rotate(-3deg)}}
+.ojo{transform-origin:center;transform-box:fill-box;animation:parpadeo 4.5s infinite}
+@keyframes parpadeo{94%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.cuarto .globo{position:absolute;top:14px;left:14px;right:14px;z-index:3;font-size:14px}
+@media (max-width:760px){.hero-grid{grid-template-columns:1fr}.cuarto{max-width:380px;width:100%;margin:0 auto}}
+
+.reto{background:var(--blanco);border:4px solid var(--negro);box-shadow:8px 8px 0 var(--negro);overflow:hidden}
+.reto-in{padding:26px}
+.reto-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.reto-head p{margin-top:10px;font-weight:700;max-width:52ch}
+.pill{display:inline-block;background:var(--amarillo);border:3px solid var(--negro);font-weight:900;font-size:13px;text-transform:uppercase;padding:3px 10px}
+.pill.ok{background:var(--verde);color:#fff}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:4px solid var(--negro);background:var(--concreto);padding:0;display:flex;flex-direction:column;text-align:left;color:var(--negro);transition:transform .25s,background .25s}
+.card .art{background:var(--amarillo);border-bottom:4px solid var(--negro);aspect-ratio:16/10;display:grid;place-items:center;max-width:100%}
+.card svg{width:62%;height:auto}
+.card .tx{padding:14px 16px}
+.card small{font-weight:900;font-size:12px;color:var(--rojo)}
+.card h3{font-size:30px}
+.card p{font-size:14px;font-weight:700;margin-top:4px}
+.card.luz{background:var(--negro);color:var(--amarillo);transform:translateY(-6px) rotate(-1deg)}
+.card.hop svg{animation:salta .55s}
+@media (max-width:680px){.cards{grid-template-columns:1fr}}
+.temblor{animation:temblor .13s infinite}
+@keyframes temblor{25%{transform:translate(-3px,1px)}75%{transform:translate(3px,-1px)}}
+.cuenta{position:fixed;inset:0;display:grid;place-items:center;background:rgba(20,20,20,.9);z-index:60;color:var(--amarillo);text-align:center;padding:24px}
+.cuenta b{font-family:var(--f-d);font-weight:400;font-size:clamp(70px,18vw,160px);line-height:1;display:block;animation:pop .45s}
+.cuenta span{font-weight:900;font-size:20px;text-transform:uppercase;color:#fff}
+@keyframes pop{50%{transform:scale(1.15)}}
+.sim-bar{margin-top:18px;display:flex;align-items:center;gap:14px;background:var(--amarillo);border:4px solid var(--negro);padding:12px 16px;flex-wrap:wrap}
+.sim-bar p{flex:1 1 220px;font-weight:700}
+
+.moch-grid{display:grid;grid-template-columns:220px 1fr;gap:26px;align-items:center}
+.moch{display:flex;flex-direction:column;align-items:center;background:var(--concreto);border:4px solid var(--negro);padding:18px}
+.moch svg{width:100%;max-width:160px}
+.moch.come svg{animation:pop .3s}
+.moch-n{margin-top:8px;font-family:var(--f-d);font-size:26px;font-variant-numeric:tabular-nums}
+.objs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.obj{border:3px solid var(--negro);background:var(--blanco);padding:16px 8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:900;text-transform:uppercase;color:var(--negro);box-shadow:3px 3px 0 var(--negro);transition:transform .15s}
+.obj:hover{transform:translate(-2px,-2px);background:var(--amarillo)}
+.obj.si{background:#cfe9d8;opacity:.6;pointer-events:none}
+.obj.no{animation:no .35s;background:#f6c9c9}
+@keyframes no{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{margin-top:16px;min-height:26px;font-weight:900}
+@media (max-width:720px){.moch-grid{grid-template-columns:1fr}.objs{grid-template-columns:repeat(2,1fr)}.moch{max-width:260px;width:100%;margin:0 auto}}
+
+.q{font-family:var(--f-d);font-size:clamp(24px,3.6vw,32px);margin-bottom:18px;line-height:1.1}
+.ops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.op{border:4px solid var(--negro);padding:14px 18px;font-size:18px;font-weight:900;text-transform:uppercase;background:var(--blanco);text-align:left;color:var(--negro);display:flex;gap:12px;align-items:center;box-shadow:4px 4px 0 var(--negro)}
+.op:hover:not(:disabled){background:var(--amarillo)}
+.op .l{flex:none;width:34px;height:34px;background:var(--negro);color:var(--amarillo);display:grid;place-items:center;font-family:var(--f-d);font-weight:400}
+.op.bien{background:var(--verde);color:#fff}
+.op.mal{background:var(--rojo);color:#fff;animation:no .35s}
+.explica{margin-top:14px;min-height:24px;font-weight:700}
+.puntos{display:flex;gap:6px;margin-top:16px}
+.puntos i{flex:1;height:10px;border:2px solid var(--negro);background:var(--blanco)}
+.puntos i.on{background:var(--negro)}
+@media (max-width:560px){.ops{grid-template-columns:1fr}}
+.sello{display:inline-block;font-family:var(--f-d);color:var(--rojo);font-size:22px;transform:rotate(-4deg);border:3px solid var(--rojo);padding:0 8px}
+
+.masc-grid{display:grid;grid-template-columns:240px 1fr;gap:26px;align-items:start}
+.masc-art{background:var(--concreto);border:4px solid var(--negro);padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.masc-art svg{width:100%;max-width:190px}
+.masc-art .globo{font-size:14px;align-self:stretch}
+.masc-art .globo::after,.masc-art .globo::before{display:none}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{border:3px solid var(--negro);background:var(--blanco);padding:8px 16px;font-weight:900;text-transform:uppercase;font-size:14px;box-shadow:3px 3px 0 var(--negro)}
+.tab[aria-selected="true"]{background:var(--negro);color:var(--amarillo)}
+.pasos{display:flex;flex-direction:column;gap:10px}
+.paso{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;border:3px solid var(--negro);background:var(--blanco);padding:12px 14px;animation:entra .3s}
+.paso b{display:block;font-weight:900;text-transform:uppercase;font-size:15px}
+.paso span{font-weight:500;font-size:14px}
+.paso .n{width:34px;height:34px;background:var(--amarillo);border:3px solid var(--negro);display:grid;place-items:center;font-family:var(--f-d);font-size:18px}
+.paso.alerta .n{background:var(--rojo);color:#fff}
+@keyframes entra{from{opacity:.2;transform:translateY(6px)}}
+.kit-masc{margin-top:22px;border-top:4px dashed var(--negro);padding-top:18px}
+.kit-masc h3{font-size:26px;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:3px solid var(--negro);background:var(--blanco);padding:7px 12px;font-weight:900;font-size:13px;text-transform:uppercase}
+.chip.on{background:var(--verde);color:#fff}
+.kit-n{margin-top:12px;font-weight:900}
+@media (max-width:720px){.masc-grid{grid-template-columns:1fr}.masc-art{max-width:300px;width:100%;margin:0 auto}}
+
+.juego{display:grid;grid-template-columns:1fr 1fr;background:var(--negro);color:#fff;border:4px solid var(--negro);box-shadow:8px 8px 0 var(--madera-h)}
+.juego-art{display:block;position:relative;min-height:260px;background:var(--concreto-2);overflow:hidden}
+.juego-art svg{position:absolute;inset:0;width:100%;height:100%}
+.grieta{animation:temblor .18s infinite;animation-play-state:paused}
+.juego:hover .grieta{animation-play-state:running}
+.juego-tx{padding:30px 26px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.juego-tx .kicker{background:var(--amarillo);color:var(--negro);align-self:flex-start}
+.juego-tx h2{color:var(--amarillo);font-size:clamp(34px,5vw,48px)}
+.juego-tx p{color:#e6e6e0;font-weight:700;max-width:42ch}
+.juego-tags{display:flex;gap:8px;flex-wrap:wrap}
+.juego-tags span{font-size:12px;font-weight:900;text-transform:uppercase;padding:3px 9px;border:2px solid var(--amarillo);color:var(--amarillo)}
+.juego-tx .btn{align-self:flex-start;box-shadow:5px 5px 0 #fff}
+.juego-url{font-size:12px;color:#bdbdb6;word-break:break-all;text-decoration:underline}
+.juego-url:hover{color:var(--amarillo)}
+@media (max-width:720px){.juego{grid-template-columns:1fr}.juego-art{min-height:200px}}
+
+.final{position:relative;overflow:hidden;background:var(--amarillo);border:4px solid var(--negro);box-shadow:8px 8px 0 var(--negro);display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:30px 26px}
+.final h2{font-size:clamp(30px,4.6vw,42px)}
+.final p{margin-block:10px 20px;font-weight:700;max-width:48ch}
+.insignia{width:130px;transition:filter .5s,opacity .5s}
+.insignia.lock{filter:grayscale(1);opacity:.4}
+.insignia.gira{animation:gira 1s}
+@keyframes gira{to{transform:rotateY(360deg)}}
+.acciones-fin{display:flex;gap:12px;flex-wrap:wrap}
+#confeti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+@media (max-width:600px){.final{grid-template-columns:1fr;text-align:center}.insignia{margin:0 auto}.final p{margin-inline:auto}.acciones-fin{justify-content:center}}
+
+footer{background:var(--negro);color:#bdbdb6;font-size:13px;font-weight:700;text-align:center}
+footer .wrap{padding-block:22px 70px}
+.proto{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--rojo);color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;padding:6px 12px;border:2px solid var(--negro)}
+.toast{position:fixed;left:50%;bottom:calc(52px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160px);background:var(--amarillo);color:var(--negro);border:3px solid var(--negro);box-shadow:4px 4px 0 var(--negro);font-weight:900;padding:10px 18px;z-index:61;transition:transform .3s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <span class="logo">Punto Seguro</span>
+    <a class="nav-juego" href="https://icefer547.itch.io/bajo-nuestros-pies-prototipo" target="_blank" rel="noopener">Jugar ↗</a>
+    <div class="prog" aria-live="polite"><span>Tu preparación</span><div class="prog-bar"><i id="progBar"></i></div><b id="progPct">0%</b></div>
+  </div>
+</header>
+<div class="cinta"></div>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="cartel">
+      <span class="kicker">Prevención sísmica · 3 retos</span>
+      <h1>Saber qué hacer también es cuidarnos.</h1>
+      <p class="lead">Aprende en cinco minutos qué hacer antes, durante y después de un sismo. Completa los retos y sube tu nivel de preparación.</p>
+      <div class="ctas">
+        <a class="btn negro" href="#reto1">Empezar retos</a>
+      </div>
+      <div class="retos-mini"><span><i id="m1">1</i>Simulacro</span><span><i id="m2">2</i>Mochila</span><span><i id="m3">3</i>Mito o verdad</span></div>
+    </div>
+    <div class="cuarto">
+      <div class="globo" id="bocadillo">Si tiembla, no corras: agáchate, cúbrete y sujétate.</div>
+      <svg class="punti" id="punti" viewBox="0 0 240 240" role="button" aria-label="Ver otro consejo">
+        <path d="M36 110 120 38l84 72" fill="#7a4a2a" stroke="#141414" stroke-width="10" stroke-linejoin="round"/>
+        <rect x="56" y="102" width="128" height="110" fill="#f7d117" stroke="#141414" stroke-width="10"/>
+        <ellipse class="ojo" cx="98" cy="146" rx="9" ry="12" fill="#141414"/>
+        <ellipse class="ojo" cx="142" cy="146" rx="9" ry="12" fill="#141414"/>
+        <path d="M106 174q14 11 28 0" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round"/>
+        <rect x="104" y="188" width="32" height="24" fill="#4f2c16" stroke="#141414" stroke-width="6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="reto1" style="padding-top:8px">
+  <div class="wrap">
+    <div class="reto" id="retoAcc">
+      <div class="cinta"></div>
+      <div class="reto-in">
+        <div class="reto-head">
+          <div><span class="pill" id="pill1">Reto 1 de 3</span><h2 class="h2" style="margin-top:12px">Tres acciones para protegerte.</h2><p>Toca cada tarjeta para conocerla. Luego haz el simulacro y sigue el ritmo.</p></div>
+        </div>
+        <div class="cards">
+          <button class="card"><div class="art"><svg viewBox="0 0 150 100"><circle cx="70" cy="40" r="14" fill="#141414"/><path d="M54 56q20-9 36 5l9 29H46z" fill="#7a4a2a" stroke="#141414" stroke-width="3"/><path d="M30 92h90" stroke="#141414" stroke-width="6" stroke-linecap="round"/></svg></div><div class="tx"><small>01</small><h3>Agáchate</h3><p>Ponte de rodillas para no caer y poder moverte.</p></div></button>
+          <button class="card"><div class="art"><svg viewBox="0 0 150 100"><rect x="20" y="24" width="110" height="11" fill="#7a4a2a" stroke="#141414" stroke-width="3"/><path d="M30 35v57M120 35v57" stroke="#141414" stroke-width="7"/><circle cx="72" cy="60" r="11" fill="#141414"/><path d="M61 71q15-7 26 2l5 18H55z" fill="#d81e1e"/></svg></div><div class="tx"><small>02</small><h3>Cúbrete</h3><p>Protege cabeza y cuello bajo un mueble resistente.</p></div></button>
+          <button class="card"><div class="art"><svg viewBox="0 0 150 100"><rect x="20" y="24" width="110" height="11" fill="#7a4a2a" stroke="#141414" stroke-width="3"/><path d="M30 35v57M120 35v57" stroke="#141414" stroke-width="7"/><circle cx="72" cy="60" r="11" fill="#141414"/><path d="M61 71q15-7 26 2l5 18H55z" fill="#2e9e5b"/><path d="M83 58l32-17" stroke="#141414" stroke-width="7" stroke-linecap="round"/></svg></div><div class="tx"><small>03</small><h3>Sujétate</h3><p>Agárrate del mueble hasta que pare el movimiento.</p></div></button>
+        </div>
+        <div class="sim-bar"><p>Simulacro guiado: la pantalla tiembla y te indica qué hacer en cada momento.</p><button class="btn negro" id="simBtn">Iniciar simulacro</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="reto">
+      <div class="cinta"></div>
+      <div class="reto-in">
+        <div class="reto-head"><div><span class="pill" id="pill2">Reto 2 de 3</span><h2 class="h2" style="margin-top:12px">Arma tu mochila de emergencia.</h2><p>Elige los 5 objetos que sí sirven durante las primeras 72 horas.</p></div></div>
+        <div class="moch-grid">
+          <div class="moch" id="moch">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <path d="M75 48v-10a25 25 0 0 1 50 0v10" fill="none" stroke="#141414" stroke-width="10"/>
+              <rect x="40" y="45" width="120" height="140" rx="26" fill="#7a4a2a" stroke="#141414" stroke-width="7"/>
+              <rect x="60" y="108" width="80" height="56" rx="8" fill="#f7d117" stroke="#141414" stroke-width="6"/>
+              <rect x="93" y="118" width="14" height="12" fill="#141414"/>
+              <rect id="fill" x="64" y="160" width="72" height="0" fill="#2e9e5b"/>
+            </svg>
+            <span class="moch-n" id="mochN">0 / 5</span>
+          </div>
+          <div>
+            <div class="objs" id="objs"></div>
+            <p class="msg" id="mochMsg">Toca un objeto para meterlo en la mochila.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="reto">
+      <div class="cinta"></div>
+      <div class="reto-in">
+        <div class="reto-head"><div><span class="pill" id="pill3">Reto 3 de 3</span><h2 class="h2" style="margin-top:12px">¿Mito o verdad?</h2></div><span class="pill" id="qNum">Pregunta 1 de 4</span></div>
+        <p class="q" id="q"></p>
+        <div class="ops" id="ops"></div>
+        <p class="explica" id="explica"></p>
+        <div class="puntos" id="puntos"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mascotas" style="padding-top:8px">
+  <div class="wrap">
+    <div class="reto">
+      <div class="cinta"></div>
+      <div class="reto-in">
+        <div class="reto-head"><div><span class="pill">Protocolo especial</span><h2 class="h2" style="margin-top:12px">Si tienes mascota, también es parte del plan.</h2><p>Ellas no entienden lo que pasa. Tú sí. Elige un momento para ver qué hacer.</p></div></div>
+        <div class="masc-grid">
+          <div class="masc-art">
+            <svg viewBox="0 0 200 170" aria-hidden="true">
+              <rect x="0" y="140" width="200" height="30" fill="#c79a6b" stroke="#141414" stroke-width="4"/>
+              <path d="M40 140v-48q0-22 26-22h60q30 0 30 26v44" fill="#7a4a2a" stroke="#141414" stroke-width="6" stroke-linejoin="round"/>
+              <rect x="50" y="118" width="16" height="24" fill="#7a4a2a" stroke="#141414" stroke-width="5"/>
+              <rect x="128" y="118" width="16" height="24" fill="#7a4a2a" stroke="#141414" stroke-width="5"/>
+              <path d="M156 92q22-6 26-30" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="58" cy="56" r="30" fill="#f7d117" stroke="#141414" stroke-width="6"/>
+              <path d="M34 40 26 14 50 30M82 40l8-26-24 16" fill="#7a4a2a" stroke="#141414" stroke-width="5" stroke-linejoin="round"/>
+              <circle cx="48" cy="54" r="5" fill="#141414"/><circle cx="68" cy="54" r="5" fill="#141414"/>
+              <ellipse cx="58" cy="68" rx="6" ry="4" fill="#141414"/>
+              <path d="M36 84q22 12 44 0" fill="none" stroke="#d81e1e" stroke-width="7"/>
+              <circle cx="58" cy="92" r="6" fill="#f7d117" stroke="#141414" stroke-width="3"/>
+            </svg>
+            <div class="globo" id="mascTip">Su placa con tu teléfono puede ser lo que la traiga de vuelta.</div>
+          </div>
+          <div>
+            <div class="tabs" role="tablist" id="mascTabs">
+              <button class="tab" role="tab" data-k="antes" aria-selected="true">Antes</button>
+              <button class="tab" role="tab" data-k="durante" aria-selected="false">Durante</button>
+              <button class="tab" role="tab" data-k="despues" aria-selected="false">Evacuación</button>
+            </div>
+            <div class="pasos" id="mascPasos"></div>
+            <div class="kit-masc">
+              <h3>Kit para tu mascota</h3>
+              <div class="chips" id="mascKit"></div>
+              <p class="kit-n" id="mascKitN">0 de 8 listos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="juego" style="padding-top:8px">
+  <div class="wrap">
+    <div class="juego">
+      <a class="juego-art" href="https://icefer547.itch.io/bajo-nuestros-pies-prototipo" target="_blank" rel="noopener" aria-label="Abrir el juego Bajo nuestros pies en itch.io">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="300" fill="#c4c4bf"/>
+          <rect x="0" y="0" width="400" height="22" fill="#f7d117"/>
+          <path d="M0 22h400" stroke="#141414" stroke-width="4"/>
+          <rect x="60" y="60" width="80" height="150" fill="#7a4a2a" stroke="#141414" stroke-width="6"/>
+          <rect x="140" y="60" width="16" height="150" fill="#4f2c16"/>
+          <circle cx="126" cy="140" r="5" fill="#f7d117"/>
+          <rect x="230" y="70" width="120" height="70" fill="#fbfbf8" stroke="#141414" stroke-width="6"/>
+          <path d="M290 70v70M230 105h120" stroke="#141414" stroke-width="5"/>
+          <g class="grieta"><rect x="0" y="210" width="400" height="90" fill="#c79a6b" stroke="#141414" stroke-width="4"/><path d="M190 210l14 22-10 18 18 20-8 30h26l-4-26 14-22-12-20 8-22z" fill="#141414"/></g>
+          <text x="200" y="196" text-anchor="middle" font-family="Rubik Dirt, Impact, sans-serif" font-size="30" fill="#d81e1e">¡TIEMBLA!</text>
+        </svg>
+      </a>
+      <div class="juego-tx">
+        <span class="kicker">Nuevo · Prototipo jugable</span>
+        <h2>Bajo nuestros pies</h2>
+        <p>Ya sabes qué hacer cuando tiembla. Ahora ponlo a prueba en el juego. Juégalo gratis desde el navegador y cuéntanos qué te pareció.</p>
+        <div class="juego-tags"><span>Gratis</span><span>itch.io</span><span>Prototipo</span></div>
+        <a class="btn" href="https://icefer547.itch.io/bajo-nuestros-pies-prototipo" target="_blank" rel="noopener">Jugar ahora ↗</a>
+        <a class="juego-url" href="https://icefer547.itch.io/bajo-nuestros-pies-prototipo" target="_blank" rel="noopener">icefer547.itch.io/bajo-nuestros-pies-prototipo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="final">
+      <canvas id="confeti"></canvas>
+      <svg class="insignia lock" id="insignia" viewBox="0 0 140 150" aria-hidden="true">
+        <path d="M70 6 128 30v42c0 36-25 62-58 72C37 134 12 108 12 72V30z" fill="#141414" stroke="#fbfbf8" stroke-width="6"/>
+        <path d="M45 76l17 17 34-36" fill="none" stroke="#f7d117" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h2 id="finTit">Insignia Punto Seguro</h2>
+        <p id="finTx">Completa los tres retos para desbloquearla. Así sabrás que estás listo para enseñárselo a tu familia.</p>
+        <div class="acciones-fin"><button class="btn blanco" id="reiniciar">Reiniciar retos</button><a class="btn negro" href="https://icefer547.itch.io/bajo-nuestros-pies-prototipo" target="_blank" rel="noopener">Jugar Bajo nuestros pies ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="cinta"></div>
+<footer><div class="wrap">Punto Seguro · Prevención sísmica para todos</div></footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const done={acc:false,moch:false,quiz:false};
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2300)}
+function progreso(){const n=Object.values(done).filter(Boolean).length,p=Math.round(n/3*100);$('#progBar').style.width=p+'%';$('#progPct').textContent=p+'%';
+ ['acc','moch','quiz'].forEach((k,i)=>{$('#m'+(i+1)).classList.toggle('ok',done[k]);$('#m'+(i+1)).textContent=done[k]?'✓':i+1;
+  const pl=$('#pill'+(i+1));pl.classList.toggle('ok',done[k]);pl.textContent=done[k]?`Reto ${i+1} · completado`:`Reto ${i+1} de 3`});
+ if(n===3)final()}
+
+const frases=["Si tiembla, no corras: agáchate, cúbrete y sujétate.","El marco de la puerta NO es seguro en casas modernas.","Las escaleras siempre, el ascensor nunca.","Tu mascota también necesita su propia mochila.","Revisa tu mochila cada seis meses.","Aléjate de ventanas y objetos que puedan caer."];
+let fi=0;$('#punti').addEventListener('click',e=>{const p=e.currentTarget;p.classList.remove('salta');void p.getBoundingClientRect();p.classList.add('salta');fi=(fi+1)%frases.length;$('#bocadillo').textContent=frases[fi]});
+
+$$('.card').forEach(c=>c.addEventListener('click',()=>{c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop')}));
+let sim=false;
+$('#simBtn').addEventListener('click',()=>{if(sim)return;sim=true;
+ const ov=document.createElement('div');ov.className='cuenta';document.body.appendChild(ov);
+ const pasos=[["3","Prepárate"],["2",""],["1",""]];let i=0;const show=()=>ov.innerHTML=`<div><b>${pasos[i][0]}</b><span>${pasos[i][1]}</span></div>`;show();
+ const t=setInterval(()=>{if(++i<pasos.length){show();return}clearInterval(t);ov.remove();correr()},750);
+ function correr(){$('#retoAcc').classList.add('temblor');const cs=$$('.card');let k=0;
+  const paso=()=>{cs.forEach((c,j)=>c.classList.toggle('luz',j===k));$('#bocadillo').textContent=["¡Agáchate ahora!","¡Cúbrete!","¡Sujétate hasta que pare!"][k]};paso();
+  const s=setInterval(()=>{if(++k<3){paso();return}clearInterval(s);cs.forEach(c=>c.classList.remove('luz'));$('#retoAcc').classList.remove('temblor');sim=false;
+   $('#bocadillo').textContent='Bien hecho. Ahora sal con calma.';if(!done.acc){done.acc=true;toast('Reto 1 completado');progreso()}},1500)}
+});
+
+const objs=[["Agua",1],["Linterna",1],["Consola",0],["Botiquín",1],["Enlatados",1],["Portátil",0],["Silbato",1],["Velas",0,"Las velas pueden causar incendios si hay fugas de gas."]];
+$('#objs').innerHTML=objs.map((o,i)=>`<button class="obj" data-i="${i}">${o[0]}</button>`).join('');
+let enMoch=0;
+$$('.obj').forEach(b=>b.addEventListener('click',()=>{const o=objs[b.dataset.i];
+ if(o[1]){b.classList.add('si');enMoch++;$('#mochN').textContent=enMoch+' / 5';const h=enMoch/5*44;$('#fill').setAttribute('height',h);$('#fill').setAttribute('y',160-h);
+  const m=$('#moch');m.classList.remove('come');void m.offsetWidth;m.classList.add('come');$('#mochMsg').textContent=`${o[0]}: ¡adentro!`;
+  if(enMoch===5&&!done.moch){done.moch=true;$('#mochMsg').textContent='Mochila lista para 72 horas.';toast('Reto 2 completado');progreso()}}
+ else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');$('#mochMsg').textContent=o[2]||`${o[0]}: no es prioridad en una emergencia.`}}));
+
+const qs=[["Durante un sismo lo mejor es salir corriendo del edificio.",0,"Mito. La mayoría de lesiones ocurren al intentar salir mientras tiembla."],
+ ["El marco de la puerta es el lugar más seguro de la casa.",0,"Mito. Hace 30 años tal vez; hoy los marcos no son más resistentes que el resto de la casa."],
+ ["Después de un sismo debes usar las escaleras, no el ascensor.",1,"Verdad. El ascensor puede detenerse o estar dañado."],
+ ["Una mochila de emergencia debe revisarse cada seis meses.",1,"Verdad. Cambia el agua, la comida y las pilas antes de que venzan."]];
+let qi=0,aciertos=0;
+function pintarQ(){$('#explica').textContent='';
+ if(qi>=qs.length){$('#q').innerHTML=`Acertaste ${aciertos} de ${qs.length}. <span class="sello">${aciertos===qs.length?'APROBADO':'SIGUE PRACTICANDO'}</span>`;$('#ops').innerHTML='';$('#qNum').textContent='Terminado';
+  if(!done.quiz){done.quiz=true;toast('Reto 3 completado');progreso()}return}
+ $('#q').textContent=qs[qi][0];$('#qNum').textContent=`Pregunta ${qi+1} de ${qs.length}`;
+ $('#ops').innerHTML=`<button class="op" data-v="1"><span class="l">V</span>Verdad</button><button class="op" data-v="0"><span class="l">M</span>Mito</button>`;
+ $$('.op').forEach(b=>b.addEventListener('click',()=>{const ok=+b.dataset.v===qs[qi][1];$$('.op').forEach(x=>x.disabled=true);
+  b.classList.add(ok?'bien':'mal');if(!ok)$$('.op').find(x=>+x.dataset.v===qs[qi][1]).classList.add('bien');if(ok)aciertos++;
+  $('#explica').textContent=qs[qi][2];$$('#puntos i')[qi].classList.add('on');qi++;setTimeout(pintarQ,2200)}))}
+pintarQ();
+
+function final(){const s=$('#insignia');s.classList.remove('lock');s.classList.add('gira');
+ $('#finTit').textContent='Insignia desbloqueada';$('#finTx').textContent='Completaste los tres retos. Ahora pon a prueba lo aprendido en Bajo nuestros pies.';
+ $('#bocadillo').textContent='¡Lo lograste! Ya sabes qué hacer.';confeti()}
+function confeti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=$('#confeti'),x=c.getContext('2d');c.width=c.offsetWidth;c.height=c.offsetHeight;
+ const cols=['#141414','#d81e1e','#fbfbf8','#7a4a2a'];const ps=Array.from({length:100},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height,v:2+Math.random()*3,s:5+Math.random()*5,c:cols[Math.random()*4|0],r:Math.random()*6}));
+ let f=0;(function d(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.y+=p.v;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});if(++f<200)requestAnimationFrame(d);else x.clearRect(0,0,c.width,c.height)})()}
+
+$('#reiniciar').addEventListener('click',()=>{done.acc=done.moch=done.quiz=false;enMoch=0;qi=0;aciertos=0;
+ $('#mochN').textContent='0 / 5';$('#fill').setAttribute('height',0);$('#fill').setAttribute('y',160);$('#mochMsg').textContent='Toca un objeto para meterlo en la mochila.';
+ $$('.obj').forEach(b=>b.classList.remove('si','no'));$$('#puntos i').forEach(i=>i.classList.remove('on'));pintarQ();
+ $('#insignia').classList.add('lock');$('#insignia').classList.remove('gira');$('#finTit').textContent='Insignia Punto Seguro';
+ $('#finTx').textContent='Completa los tres retos para desbloquearla. Así sabrás que estás listo para enseñárselo a tu familia.';
+ $('#bocadillo').textContent='Si tiembla, no corras: agáchate, cúbrete y sujétate.';progreso();document.getElementById('reto1').scrollIntoView({behavior:'smooth'})});
+const masc={antes:[["Identifícala","Placa con tu nombre y teléfono, y microchip con datos actualizados."],["Tómense una foto juntos","Sirve para demostrar que es tuya si se pierde."],["Practica con el transportador","Que entre sola y sin estrés; en una emergencia no hay tiempo para convencerla."],["Inclúyela en el plan familiar","Decidan quién la saca y llévenla en los simulacros."],["Busca un refugio que la acepte","Familiares, amigos o albergues que reciban animales."]],
+ durante:[["Protégete tú primero","Agáchate, cúbrete y sujétate. No la persigas mientras tiembla.",1],["Déjala buscar refugio","Los animales se esconden por instinto; intentar atraparla te pone en riesgo.",1],["Ubícala con la mirada","Fíjate dónde se escondió para buscarla en cuanto pare."]],
+ despues:[["Ponle correa o transportador","Antes de salir. Asustada, puede escapar corriendo."],["Nunca la dejes encerrada ni amarrada","Si evacúas, evacúa con ella.",1],["Háblale con calma","Por el miedo puede morder o arañar, incluso a ti.",1],["Cuida sus patas","Evita vidrios, escombros y cables en el camino."],["Mantenla contigo en el punto de encuentro","Si se pierde, revisa albergues y comparte su foto."]]};
+const mascTips={antes:"Su placa con tu teléfono puede ser lo que la traiga de vuelta.",durante:"Tu vida primero. Ella sabe esconderse.",despues:"Correa puesta, calma y siempre juntos."};
+function pintarMasc(k){$$('#mascTabs .tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.k===k));$('#mascTip').textContent=mascTips[k];
+ $('#mascPasos').innerHTML=masc[k].map((p,i)=>`<div class="paso${p[2]?' alerta':''}"><span class="n">${i+1}</span><div><b>${p[0]}</b><span>${p[1]}</span></div></div>`).join('')}
+$$('#mascTabs .tab').forEach(t=>t.addEventListener('click',()=>pintarMasc(t.dataset.k)));pintarMasc('antes');
+const kitM=["Agua para 3 días","Comida para 3 días","Platos","Correa y arnés","Transportador","Medicamentos","Carné de vacunas","Bolsas y arena"];
+$('#mascKit').innerHTML=kitM.map(k=>`<button class="chip">${k}</button>`).join('');
+$$('#mascKit .chip').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('on');const n=$$('#mascKit .chip.on').length;
+ $('#mascKitN').textContent=n===kitM.length?'Kit completo. Guárdalo junto a tu mochila.':`${n} de ${kitM.length} listos`}));
+progreso();
+</script>
+</body>
+</html>
